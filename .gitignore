@@ -27,7 +27,12 @@
 *.i*86
 *.x86_64
 *.hex
+ft_nm
+ft_otool
 
 # Debug files
 *.dSYM/
 *.su
+
+# Vim
+*.swp
