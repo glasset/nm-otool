@@ -6,7 +6,7 @@
 #*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/08/05 14:53:35 by glasset           #+#    #+#             *#
-#*   Updated: 2016/09/09 12:10:38 by glasset          ###   ########.fr       *#
+#*   Updated: 2016/09/18 15:28:49 by glasset          ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -31,9 +31,11 @@ all: $(NM) $(OTOOL)
 $(NM): $(OBJ_NM)
 	@make -C libft
 	@$(COMPILER) $(OBJ_NM) -L libft -lft -o $(NM)
+	@echo $(NM) compil
 
 $(OTOOL): $(OBJ_OTOOL)
 	@$(COMPILER) $(OBJ_OTOOL) -L libft -lft -o $(OTOOL)
+	@echo $(OTOOL) compil
 
 %.o: %.c
 	@$(COMPILER) $(FLAGS) -c -I libft/ $<
