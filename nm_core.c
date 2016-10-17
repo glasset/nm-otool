@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 16:42:01 by glasset           #+#    #+#             */
-/*   Updated: 2016/09/24 20:44:35 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/17 23:30:47 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "nm.h"
@@ -48,21 +48,119 @@ char	type(int type, int sec, int value, t_flags *flags)
 }
 
 // TODO migrate to libft
-int				ft_hexa(unsigned int n)
+int				ft_hexa(unsigned int n, char **str, int i)
 {
 	unsigned int			a;
 	unsigned int			u;
-	char					*str;
+	char					*val;
 
-	str = "0123456789abcdef";
+	val = "0123456789abcdef";
 	u = 0;
 	a = n % 16;
 	n = n / 16;
 	if (n > 0)
-		u = u + ft_hexa(n);
-	write(1, &str[a], 1);
+		u = u + ft_hexa(n, str, (i - 1));
+	(*str)[i] =  val[a];
 	u++;
 	return (u);
+}
+
+void	feedO(char **str)
+{
+	int i;
+
+	i = 0;
+	while (i < 16)
+	{
+		if (i == 7)
+			(*str)[i] = '1';
+		else
+			(*str)[i] = '0';
+		i++;
+	}
+	(*str)[i] = '\0';
+}
+
+static t_print	*new_node(t_print *prev)
+{
+	t_print		*new;
+	void		*tmp;
+
+	if (!(new = (t_print *)malloc(sizeof(t_print))))
+		return (NULL);
+	if (!(tmp = malloc(sizeof(char) * 16 + 1)))
+	{
+		free(new);
+		return (NULL);
+	}
+	new->hexa = (char *)tmp;
+	new->type = 'U';
+	new->name = NULL;
+	new->next = NULL;
+	new->prev = prev;
+
+	return (new);
+}
+
+t_print *to_start(t_print *cmd)
+{
+	while (cmd->prev != NULL)
+		cmd = cmd->prev;
+	return cmd;
+}
+
+void	print_list(t_print *cmd)
+{
+	cmd = to_start(cmd);
+	while (cmd->next != NULL)
+	{
+		ft_putstr(cmd->hexa);
+		ft_putstr(" ");
+		ft_putchar(cmd->type);
+		ft_putstr(" ");
+		ft_putendl(cmd->name);
+		cmd = cmd->next;
+	}
+}
+
+int		is_sort(t_print *cmd)
+{
+	cmd = to_start(cmd);
+	while (cmd->next != NULL)
+	{
+		if (ft_strcmp(cmd->name, cmd->next->name) > 0) {
+			return (0);
+		}
+		cmd = cmd->next;
+	}
+
+	return (1);
+}
+
+void	sort(t_print *cmd)
+{
+	t_print *tmp;
+
+	tmp = NULL;
+	while (is_sort(cmd) == 0)
+	{
+		cmd = to_start(cmd);
+		while (cmd->next != NULL)
+		{
+			//TODO linked list bug as hell
+			if (ft_strcmp(cmd->name, cmd->next->name) > 0)
+			{
+				tmp = cmd;
+				cmd = cmd->next;
+				cmd->prev = tmp->prev;
+				tmp->prev = cmd;
+				tmp->next = cmd->next;
+				cmd->next = tmp;
+			}
+			cmd = cmd->next;
+		}
+	}
+	print_list(cmd);
 }
 
 void	print(int nsyms, int symoff, int stroff, char *ptr, t_flags *flags)
@@ -70,27 +168,30 @@ void	print(int nsyms, int symoff, int stroff, char *ptr, t_flags *flags)
 	int i;
 	struct nlist_64		*list;
 	char				*strtab;
-
-
+	t_print				*cmd;
 	list = (void *) ptr + symoff;
 	strtab = ptr + stroff;
 	i = 0;
 
+	cmd = new_node(NULL);
 	while (i < nsyms)
 	{
-		// TODO clean print  + padding
-		if (list[i].n_value) {
-		ft_putstr("000000000000");
-		ft_hexa(list[i].n_value);
+		// TODO clean print  + padding + sort ASC 
+		if (list[i].n_value)
+		{
+			feedO(&cmd->hexa);
+			ft_hexa(list[i].n_value, &cmd->hexa, 15);
 		}
-		else {
-		ft_putstr("                ");
-		}
-		ft_putstr(" ");
-		ft_putchar(type(list[i].n_type, list[i].n_sect, list[i].n_value, flags));
-		ft_putstr(" ");
-		ft_putendl(strtab + list[i++].n_un.n_strx);
+		else
+			cmd->hexa = ft_strdup("                ");
+		cmd->type = type(list[i].n_type, list[i].n_sect, list[i].n_value, flags);
+		cmd->name = ft_strdup(strtab + list[i++].n_un.n_strx);
+		cmd->next = new_node(cmd);
+		cmd = cmd->next;
 	}
+	cmd = cmd->prev;
+	cmd->next = NULL;
+	sort(cmd);
 }
 
 void	handle_segment(t_flags *flags, struct segment_command_64 *seg)
