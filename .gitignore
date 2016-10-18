@@ -34,5 +34,6 @@ ft_otool
 *.dSYM/
 *.su
 
+test/
 # Vim
 *.swp

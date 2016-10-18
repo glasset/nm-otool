@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:52:19 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/17 23:30:49 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/18 23:08:53 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,21 @@ typedef struct				s_print {
 }							t_print;
 
 
-int		nm(char *ptr);
+int				nm(char *ptr);
+
+/*
+ * list
+ */
+t_print			*new_node(t_print *prev);
+t_print			*to_start(t_print *cmd);
+
+/*
+ * print
+ */
+int		ft_hexa(unsigned int n, char **str, int i);
+void	sort(t_print *cmd);
+
+
+char	type(int type, int sec, int value, t_flags *flags);
 
 #endif
