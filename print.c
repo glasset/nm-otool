@@ -6,36 +6,35 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 22:40:55 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/18 23:03:16 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/19 14:29:49 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static void		feedO(char **str)
+static void		feedO(char **str, int len)
 {
 	int i;
 
 	i = 0;
-	while (i < 16)
+	while (i < (len + 1))
 	{
 		// TODO check 1 ?
-		if (i == 7)
-			(*str)[i] = '1';
-		else
+//		if (i == 7)
+//			(*str)[i] = '1';
+//		else
 			(*str)[i] = '0';
 		i++;
 	}
 	(*str)[i] = '\0';
 }
 
-int				ft_hexa(unsigned int n, char **str, int i)
+static int		gen_hexa(unsigned long n, char **str, int i)
 {
 	unsigned int			a;
 	unsigned int			u;
 	char					*val;
 
-	feedO(str);
 	val = "0123456789abcdef";
 	u = 0;
 	a = n % 16;
@@ -45,6 +44,12 @@ int				ft_hexa(unsigned int n, char **str, int i)
 	(*str)[i] =  val[a];
 	u++;
 	return (u);
+}
+
+int				ft_hexa(unsigned long n, char **str, int i)
+{
+	feedO(str, i);
+	return (gen_hexa(n, str, i));
 }
 
 void	print_list(t_print *cmd)

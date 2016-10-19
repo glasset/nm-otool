@@ -6,12 +6,12 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 23:03:20 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/18 23:08:54 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/19 14:29:55 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "nm.h"
 
-static char n_sect(int sec, t_flags *flags)
+static char n_sect(int type, int sec, t_flags *flags)
 {
 	char c;
 
@@ -24,7 +24,6 @@ static char n_sect(int sec, t_flags *flags)
 		c = 'B';
 	else
 		c = 'S';
-
 	return (c);
 }
 
@@ -46,7 +45,7 @@ char	type(int type, int sec, int value, t_flags *flags)
 			c = 'A';
 			break;
 		case N_SECT:
-			c = n_sect(sec, flags);
+			c = n_sect(type, sec, flags);
 			break;
 		case N_INDR:
 			c = 'I';
@@ -54,6 +53,12 @@ char	type(int type, int sec, int value, t_flags *flags)
 		default:
 			break;
 	}
+	/*
+	 * symbol is local (non-external)
+	 */
+	if (!(type & N_EXT))
+		c += 32;
+
 	return c;
 }
 
