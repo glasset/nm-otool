@@ -6,12 +6,12 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 11:17:39 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/19 14:33:28 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/20 20:33:53 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "nm.h"
-static t_print		*generate_list(int nsyms, int symoff, int stroff, char *ptr, t_flags *flags)
+
+static t_print			*generate_list(int nsyms, int symoff, int stroff, char *ptr, char **sectnames)
 {
 	int					i;
 	struct nlist_64		*list;
@@ -32,8 +32,11 @@ static t_print		*generate_list(int nsyms, int symoff, int stroff, char *ptr, t_f
 		if (list[i].n_value)
 			ft_hexa(list[i].n_value, &cmd->hexa, 15);
 		else
+		{
+			free(cmd->hexa);
 			cmd->hexa = ft_strdup("                ");
-		cmd->type = type(list[i].n_type, list[i].n_sect, list[i].n_value, flags);
+		}
+		cmd->type = type(list[i].n_type, sectnames[list[i].n_sect - 1], list[i].n_value);
 		cmd->name = ft_strdup(strtab + list[i++].n_un.n_strx);
 		cmd->next = new_node(cmd);
 		cmd = cmd->next;
@@ -43,62 +46,43 @@ static t_print		*generate_list(int nsyms, int symoff, int stroff, char *ptr, t_f
 	return (cmd);
 }
 
-static void		handle_segment_64(t_flags *flags, struct segment_command_64 *seg)
+static void				get_sectnames(struct segment_command_64 *seg, char **sectnames)
 {
-	int					i;
+	int					index;
+	size_t				i;
 	struct section_64	*sec;
 
+	index = get_len(sectnames);
 	i = 0;
 	sec = (struct section_64 *) ((char *)seg + sizeof(struct segment_command_64));
 	while (i < seg->nsects)
 	{
-		if (ft_strcmp((sec + i)->sectname, SECT_TEXT) == 0 &&
-				ft_strcmp((sec + i)->segname, SEG_TEXT) == 0)
-		{
-			flags->text_nsect = i + 1;
-		}
-		else if (ft_strcmp((sec + i)->sectname, SECT_DATA) == 0 &&
-				ft_strcmp((sec + i)->segname, SEG_DATA) == 0)
-		{
-			flags->data_nsect = i + 1;
-		}
-		else if (ft_strcmp((sec + i)->sectname, SECT_BSS) == 0 &&
-				ft_strcmp((sec + i)->segname, SEG_DATA) == 0)
-		{
-			flags->bss_nsect = i + 1;
-		}
+		sectnames[index++] = (sec + i)->sectname;
 		i++;
 	}
+	sectnames[index] = NULL;
 }
 
-void	header_64(char *ptr)
+void						header_64(char *ptr)
 {
-	t_flags					flags;
 	struct mach_header_64	*header;
 	struct load_command		*command;
 	struct symtab_command	*sym;
 	unsigned long int		i;
+	char					*sectnames[256];
 	int						ncmds;
 
-	flags.text_nsect = NO_SECT;
-	flags.data_nsect = NO_SECT;
-	flags.bss_nsect = NO_SECT;
 	i = 0;
 	header = (struct mach_header_64 *)ptr;
 	command = (void *)ptr + sizeof(*header);
 	while (i < header->ncmds)
 	{
 		if (command->cmd == LC_SYMTAB)
-		{
 			sym = (struct symtab_command *)command;
-			sort(generate_list(sym->nsyms, sym->symoff, sym->stroff, ptr, &flags));
-			break;
-		}
 		if (command->cmd == LC_SEGMENT_64)
-		{
-			handle_segment_64(&flags, (struct segment_command_64 *)command);
-		}
+			get_sectnames((struct segment_command_64 *)command, sectnames);
 		command = (void *)command + command->cmdsize;
 		i++;
 	}
+	sort(generate_list(sym->nsyms, sym->symoff, sym->stroff, ptr, sectnames));
 }

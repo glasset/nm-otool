@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 22:40:55 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/19 14:29:49 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/20 20:08:08 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@ static void		feedO(char **str, int len)
 	i = 0;
 	while (i < (len + 1))
 	{
-		// TODO check 1 ?
-//		if (i == 7)
-//			(*str)[i] = '1';
-//		else
-			(*str)[i] = '0';
-		i++;
+		(*str)[i++] = '0';
 	}
 	(*str)[i] = '\0';
 }

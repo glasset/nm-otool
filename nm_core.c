@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 16:42:01 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/19 14:33:29 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/19 20:14:47 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "nm.h"
@@ -28,13 +28,17 @@ int		nm(char *ptr)
 			header_64(ptr);
 			break;
 		case FAT_MAGIC:
-			ft_putendl("FAT binary");
+			header_fat(ptr);
 			break;
 		case FAT_CIGAM:
-			ft_putendl("FAT binary");
+			header_fat(ptr);
 			break;
 		default:
-			ft_putendl("Unknown binary");
+			// TODO handle archive
+			if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
+				ft_putendl("ar");
+			else
+				ft_putendl("Unknown binary");
 			break;
 	}
 	return 0;

@@ -6,28 +6,39 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 23:03:20 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/19 14:29:55 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/20 19:36:09 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "nm.h"
 
-static char n_sect(int type, int sec, t_flags *flags)
+int		get_len(char **sectnames)
+{
+	int	i;
+
+	i = 0;
+	while (sectnames[i] != NULL)
+		i++;
+	return i;
+}
+
+static char n_sect(int type, char *sectname)
 {
 	char c;
 
 	c = '?';
-	if (sec == flags->text_nsect)
+	if (ft_strcmp(sectname, SECT_TEXT) == 0)
 		c = 'T';
-	else if (sec == flags->data_nsect)
+	else if (ft_strcmp(sectname, SECT_DATA) == 0)
 		c = 'D';
-	else if (sec == flags->bss_nsect)
+	else if (ft_strcmp(sectname, SECT_BSS) == 0)
 		c = 'B';
-	else
+	else {
 		c = 'S';
+	}
 	return (c);
 }
 
-char	type(int type, int sec, int value, t_flags *flags)
+char	type(int type, char *sectname, int value)
 {
 	char	c;
 
@@ -45,7 +56,7 @@ char	type(int type, int sec, int value, t_flags *flags)
 			c = 'A';
 			break;
 		case N_SECT:
-			c = n_sect(type, sec, flags);
+			c = n_sect(type, sectname);
 			break;
 		case N_INDR:
 			c = 'I';
