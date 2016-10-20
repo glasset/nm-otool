@@ -6,7 +6,7 @@
 #*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/08/05 14:53:35 by glasset           #+#    #+#             *#
-#*   Updated: 2016/10/19 14:35:53 by glasset          ###   ########.fr       *#
+#*   Updated: 2016/10/20 20:51:59 by glasset          ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -19,6 +19,7 @@ SRC_NM = ft_nm.c \
 		 nm_64.c \
 		 nm_32.c \
 		 nm_fat.c \
+		 nm_ar.c \
 		 list.c \
 		 print.c \
 		 type.c

@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 14:35:58 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/20 20:42:25 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/20 21:10:50 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		reverse_int(int x)
 	return (x << 16) | (x >> 16);
 }
 
-void			header_fat(char *ptr)
+void			header_fat(char *ptr, char *filename)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;
@@ -36,7 +36,7 @@ void			header_fat(char *ptr)
 		arch++;
 		i++;
 	}
-	nm(ptr + reverse_int(offset));
+	nm(ptr + reverse_int(offset), filename);
 }
 
 

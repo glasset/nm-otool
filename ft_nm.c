@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:51:41 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/20 19:55:28 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/20 21:33:15 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "nm.h"
@@ -32,7 +32,7 @@ int			map_file(char *file_name)
 		write(2, "fail mmap\n", 10);
 		return (0);
 	}
-	nm(ptr);
+	nm(ptr, file_name);
 	if (munmap(0, buf.st_size) < 0)
 	{
 		write(2, "fail munmap\n", 12);
@@ -41,7 +41,6 @@ int			map_file(char *file_name)
 	close(fd);
 	return (1);
 }
-
 
 int			loop_file(int ac, char **av)
 {
