@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:52:19 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/20 21:32:59 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/28 14:03:44 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,23 @@ t_print			*to_start(t_print *cmd);
 /*
  * print
  */
-int		ft_hexa(unsigned long n, char **str, int i);
 void	sort(t_print *cmd);
 
 
 char	type(int type, char *sectname, int value);
 int		get_len(char **sectnames);
+int		ft_hexa(unsigned long n, char **str, int i);
+/*
+ *
+ */
+int				otool(char *ptr, char *filename);
+void			ot_64(char *ptr);
+void			ot_32(char *ptr);
+void			ot_fat(char *ptr, char *filename);
+void			ot_ar(char *ptr, char *filename);
+
+
+void			print_section(unsigned long addr, int size, char *ptr, int bit);
+
 
 #endif
