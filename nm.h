@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:52:19 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/28 14:03:44 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/29 12:23:53 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ typedef struct				s_print {
 }							t_print;
 
 
-typedef struct			s_offlist
+typedef struct			s_ar
 {
-	uint32_t			off;
-	uint32_t			strx;
-	struct s_offlist	*next;
-}						t_offlist;
+	uint32_t			ran_off;
+	char				*name;
+}						t_ar;
 
 int				nm(char *ptr, char *filename);
 

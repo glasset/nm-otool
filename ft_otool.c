@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 15:02:36 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/29 00:28:31 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/29 12:32:54 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,17 @@ int			loop_file(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		ft_putstr("Archive : ");
-		write(1, av[i], strlen(av[i]));
-		write(1, "\n", 1);
+		if (av[i][strlen(av[i]) - 1] == 'a')
+		{
+			ft_putstr("Archive : ");
+			ft_putstr(av[i]);
+			ft_putchar('\n');
+		}
+		else
+		{
+			ft_putstr(av[i]);
+			write(1, ":\n", 2);
+		}
 		if (!map_file(av[i++]))
 			write(1, "KO", 2); //return 0??
 	}
