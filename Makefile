@@ -6,7 +6,7 @@
 #*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/08/05 14:53:35 by glasset           #+#    #+#             *#
-#*   Updated: 2016/10/31 19:38:03 by glasset          ###   ########.fr       *#
+#*   Updated: 2016/10/31 20:30:56 by glasset          ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -24,7 +24,7 @@ SRC_NM = ft_nm.c \
 		 hexa.c \
 		 print.c \
 		 type.c \
-		 t_ar.c
+		 ran_off.c
 
 SRC_OTOOL = ft_otool.c \
 			otool_core.c \
@@ -33,7 +33,7 @@ SRC_OTOOL = ft_otool.c \
 			otool_fat.c \
 			otool_ar.c \
 			hexa.c \
-			t_ar.c
+			ran_off.c
 
 OBJ_NM = $(SRC_NM:.c=.o)
 

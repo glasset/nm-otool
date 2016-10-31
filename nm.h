@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:52:19 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 19:41:55 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 20:24:02 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,6 @@ typedef struct		s_print {
 	struct s_print	*prev;
 }					t_print;
 
-typedef struct		s_ar
-{
-	uint32_t		ran_off;
-	char			*name;
-}					t_ar;
-
 int					nm(char *ptr, char *filename);
 
 void				header_64(char *ptr);
@@ -48,12 +42,12 @@ void				header_fat(char *ptr, char *filename);
 void				header_ar(char *ptr, char *filename);
 
 /*
-** list & t_ar managment
+** list & ran_off managment
 */
 t_print				*new_node(t_print *prev);
 t_print				*to_start(t_print *cmd);
-t_ar				*sort_by_offset(t_ar *arr, size_t len);
-t_ar				*gen_array(struct ranlib *rl, size_t len, char *ptr);
+int				*sort_by_offset(int *arr, size_t len);
+int				*gen_array(struct ranlib *rl, size_t len, char *ptr);
 
 
 /*

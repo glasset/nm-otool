@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_ar.c                                             :+:      :+:    :+:   */
+/*   ran_off.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/31 19:35:43 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 19:53:57 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 20:30:42 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static int			is_sort(t_ar *rl, size_t len)
+static int			is_sort(int *rl, size_t len)
 {
 	int				i;
 
 	i = 0;
 	while ((i + 1) < len)
 	{
-		if (rl[i].ran_off > rl[i + 1].ran_off)
+		if (rl[i] > rl[i + 1])
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-t_ar				*sort_by_offset(t_ar *arr, size_t len)
+int					*sort_by_offset(int *arr, size_t len)
 {
-	t_ar			tmp;
+	int				tmp;
 	int				i;
 
 	i = 0;
@@ -37,7 +37,7 @@ t_ar				*sort_by_offset(t_ar *arr, size_t len)
 		i = 0;
 		while ((i + 1) < len)
 		{
-			if (arr[i].ran_off > arr[i + 1].ran_off)
+			if (arr[i] > arr[i + 1])
 			{
 				tmp = arr[i];
 				arr[i] = arr[i + 1];
@@ -49,22 +49,20 @@ t_ar				*sort_by_offset(t_ar *arr, size_t len)
 	return (arr);
 }
 
-t_ar				*gen_array(struct ranlib *rl, size_t len, char *ptr)
+int					*gen_array(struct ranlib *rl, size_t len, char *ptr)
 {
 	struct ar_hdr	*ar;
-	t_ar			*arr;
+	int				*arr;
 	int				i;
 
 	arr = malloc(sizeof(arr) * len + 1);
+	ft_bzero(arr, len);
 	i = 0;
 	while (i < len)
 	{
 		ar = (void*)ptr + rl[i].ran_off;
-		arr[i].ran_off = rl[i].ran_off;
-		// TODO bug bad alloc ?
-		arr[i].name = ft_strdup(ft_strstr(ar->ar_name, ARFMAG) + ft_strlen(ARFMAG));
+		arr[i] = rl[i].ran_off;
 		i++;
 	}
 	return (arr);
 }
-

@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/20 20:51:43 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 19:49:21 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 20:28:49 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,24 @@ static void			putname(char *ar_name, char *name)
 	ft_putstr("):\n");
 }
 
-static void			browse_ar(char *ptr, char *filename, size_t size, t_ar *list)
+static void			browse_ar(char *ptr, char *filename, size_t size,int *list)
 {
 	size_t			i;
 	int				extended;
 	struct ar_hdr	*ar;
+	char			*str;
 
 	i = 0;
 	ar = (void*)ptr + SARMAG;
 	extended = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
 	while (i < size)
 	{
-			putname(filename, list[i].name);
-			ar = (void*)ptr + list[i].ran_off;
-			nm((void*)ar + sizeof(*ar) + extended, list[i].name);
-			i++;
+		ar = (void*)ptr + list[i];
+		str = ft_strdup(ft_strstr(ar->ar_name, ARFMAG) + ft_strlen(ARFMAG));
+		putname(filename, str);
+		nm((void*)ar + sizeof(*ar) + extended, str);
+		i++;
+		free(str);
 	}
 }
 
@@ -50,7 +53,7 @@ void				header_ar(char *ptr, char *filename)
 	char			*str;
 	size_t			size;
 	int				extended;
-	t_ar			*list;
+	int				*list;
 
 	ar = (void*)ptr + SARMAG;
 	extended = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
@@ -61,5 +64,3 @@ void				header_ar(char *ptr, char *filename)
 	browse_ar(ptr, filename, size, list);
 	free(list);
 }
-
-
