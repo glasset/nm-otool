@@ -6,11 +6,15 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 11:17:39 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 16:31:23 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 22:07:16 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
+
+/*
+** continue for ignore 'radr://5614' debug
+*/
 
 static t_print				*generate_list(int nsyms, int symoff, int stroff,
 		char *ptr, char **sectnames)
@@ -31,7 +35,7 @@ static t_print				*generate_list(int nsyms, int symoff, int stroff,
 			i++;
 			continue;
 		}
-		if (list[i].n_value)
+		if (list[i].n_value || (list[i].n_type & N_TYPE) == N_SECT)
 			ft_hexa(list[i].n_value, &cmd->hexa, 15);
 		else
 		{
@@ -62,7 +66,8 @@ static void					get_sectnames(struct segment_command_64 *seg,
 			+ sizeof(struct segment_command_64));
 	while (i < seg->nsects)
 	{
-		sectnames[index++] = (sec + i)->sectname;
+		sectnames[index] = (sec + i)->sectname;
+		index++;
 		i++;
 	}
 	sectnames[index] = NULL;
@@ -73,9 +78,10 @@ void						header_64(char *ptr)
 	struct mach_header_64	*header;
 	struct load_command		*command;
 	struct symtab_command	*sym;
-	unsigned long int		i;
+	int						i;
 	char					*sectnames[256];
 
+	sectnames[0] = NULL;
 	i = 0;
 	header = (struct mach_header_64 *)ptr;
 	command = (void *)ptr + sizeof(*header);

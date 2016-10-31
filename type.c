@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 23:03:20 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 15:04:55 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 22:04:03 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int			get_len(char **sectnames)
 	return (i);
 }
 
-static char	n_sect(int type, char *sectname)
+static char	n_sect(char *sectname)
 {
 	char	c;
 
@@ -55,7 +55,7 @@ char		type(int type, char *sectname, int value)
 	else if (t2 == N_ABS)
 		c = 'A';
 	else if (t2 == N_SECT)
-		c = n_sect(type, sectname);
+		c = n_sect(sectname);
 	else if (t2 == N_INDR)
 		c = 'I';
 	if (!(type & N_EXT))

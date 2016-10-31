@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 11:19:58 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 16:15:06 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 22:07:15 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_print				*generate_list(int nsyms, int symoff, int stroff,
 	cmd = new_node(NULL);
 	while (i < nsyms)
 	{
-		if (list[i].n_value != 0)
+		if (list[i].n_value || (list[i].n_type & N_TYPE) == N_SECT)
 			ft_hexa(list[i].n_value, &cmd->hexa, 7);
 		else
 			cmd->hexa = ft_strdup("        ");
@@ -64,9 +64,11 @@ void						header_32(char *ptr)
 	struct mach_header		*header;
 	struct load_command		*command;
 	struct symtab_command	*sym;
-	unsigned long int		i;
+	size_t					i;
 	char					*sectnames[256];
 
+	i = 0;
+	sectnames[0] = NULL;
 	header = (struct mach_header *)ptr;
 	command = (void *)ptr + sizeof(*header);
 	while (i < header->ncmds)
