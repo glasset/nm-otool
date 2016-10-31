@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:52:19 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 14:24:18 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 19:41:55 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ void				header_fat(char *ptr, char *filename);
 void				header_ar(char *ptr, char *filename);
 
 /*
-** list
+** list & t_ar managment
 */
 t_print				*new_node(t_print *prev);
 t_print				*to_start(t_print *cmd);
+t_ar				*sort_by_offset(t_ar *arr, size_t len);
+t_ar				*gen_array(struct ranlib *rl, size_t len, char *ptr);
+
 
 /*
 ** print & list

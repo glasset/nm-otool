@@ -6,48 +6,60 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/20 20:51:43 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 15:16:06 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 19:49:21 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-void				putname(char *ar_name, char *obj_name)
+
+
+static void			putname(char *ar_name, char *name)
 {
 	ft_putchar('\n');
 	ft_putstr(ar_name);
 	ft_putstr("(");
-	ft_putstr(obj_name);
+	ft_putstr(name);
 	ft_putstr("):\n");
 }
 
-/*
-** https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
-** TODO 6 var
-*/
-
-void				header_ar(char *ptr, char *filename)
+static void			browse_ar(char *ptr, char *filename, size_t size, t_ar *list)
 {
-	struct ar_hdr	*ar;
-	struct ranlib	*rl;
-	char			*str;
+	size_t			i;
 	int				extended;
-	int				size;
-	int				i;
+	struct ar_hdr	*ar;
 
 	i = 0;
 	ar = (void*)ptr + SARMAG;
 	extended = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
-	str = (void*)ptr + sizeof(*ar) + SARMAG + extended;
-	rl = (void*)str + 4;
-	size = *((int *)str);
-	size /= sizeof(struct ranlib);
 	while (i < size)
 	{
-		ar = (void*)ptr + rl[i].ran_off;
-		str = ft_strstr(ar->ar_name, ARFMAG) + ft_strlen(ARFMAG);
-		putname(filename, str);
-		nm((void*)ar + sizeof(*ar) + extended, str);
-		i++;
+			putname(filename, list[i].name);
+			ar = (void*)ptr + list[i].ran_off;
+			nm((void*)ar + sizeof(*ar) + extended, list[i].name);
+			i++;
 	}
 }
+
+/*
+** https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
+*/
+void				header_ar(char *ptr, char *filename)
+{
+	struct ar_hdr	*ar;
+	char			*str;
+	size_t			size;
+	int				extended;
+	t_ar			*list;
+
+	ar = (void*)ptr + SARMAG;
+	extended = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
+	str = (void*)ptr + sizeof(*ar) + SARMAG + extended;
+	size = *((int *)str);
+	size /= sizeof(struct ranlib);
+	list = sort_by_offset(gen_array((void*)str + 4, size, ptr), size);
+	browse_ar(ptr, filename, size, list);
+	free(list);
+}
+
+

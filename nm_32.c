@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 11:19:58 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 15:30:23 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 16:15:06 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void						header_32(char *ptr)
 	struct symtab_command	*sym;
 	unsigned long int		i;
 	char					*sectnames[256];
-	int						ncmds;
 
 	header = (struct mach_header *)ptr;
 	command = (void *)ptr + sizeof(*header);

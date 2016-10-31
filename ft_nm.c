@@ -6,16 +6,34 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:51:41 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 15:26:10 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 16:11:48 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-int				map_file(char *file_name)
+static int		map(struct stat buf, int fd, char *filename)
+{
+	char		*ptr;
+
+	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+			== MAP_FAILED)
+	{
+		write(2, "fail mmap\n", 10);
+		return (0);
+	}
+	nm(ptr, filename);
+	if (munmap(0, buf.st_size) < 0)
+	{
+		write(2, "fail munmap\n", 12);
+		return (0);
+	}
+	return (1);
+}
+
+static int		map_file(char *file_name)
 {
 	int			fd;
-	char		*ptr;
 	struct stat	buf;
 
 	if ((fd = open(file_name, O_RDONLY)) < 0)
@@ -28,18 +46,8 @@ int				map_file(char *file_name)
 		write(2, "fail fstat\n", 11);
 		return (0);
 	}
-	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
-			== MAP_FAILED)
-	{
-		write(2, "fail mmap\n", 10);
+	if (!map(buf, fd, file_name))
 		return (0);
-	}
-	nm(ptr, file_name);
-	if (munmap(0, buf.st_size) < 0)
-	{
-		write(2, "fail munmap\n", 12);
-		return (0);
-	}
 	close(fd);
 	return (1);
 }
