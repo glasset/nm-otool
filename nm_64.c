@@ -6,19 +6,21 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 11:17:39 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/20 20:33:53 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 15:31:41 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "nm.h"
 
-static t_print			*generate_list(int nsyms, int symoff, int stroff, char *ptr, char **sectnames)
+static t_print				*generate_list(int nsyms, int symoff, int stroff,
+		char *ptr, char **sectnames)
 {
-	int					i;
-	struct nlist_64		*list;
-	char				*strtab;
-	t_print				*cmd;
+	int						i;
+	struct nlist_64			*list;
+	char					*strtab;
+	t_print					*cmd;
 
-	list = (void *) ptr + symoff;
+	list = (void *)ptr + symoff;
 	strtab = ptr + stroff;
 	i = 0;
 	cmd = new_node(NULL);
@@ -36,7 +38,8 @@ static t_print			*generate_list(int nsyms, int symoff, int stroff, char *ptr, ch
 			free(cmd->hexa);
 			cmd->hexa = ft_strdup("                ");
 		}
-		cmd->type = type(list[i].n_type, sectnames[list[i].n_sect - 1], list[i].n_value);
+		cmd->type = type(list[i].n_type, sectnames[list[i].n_sect - 1],
+				list[i].n_value);
 		cmd->name = ft_strdup(strtab + list[i++].n_un.n_strx);
 		cmd->next = new_node(cmd);
 		cmd = cmd->next;
@@ -46,15 +49,17 @@ static t_print			*generate_list(int nsyms, int symoff, int stroff, char *ptr, ch
 	return (cmd);
 }
 
-static void				get_sectnames(struct segment_command_64 *seg, char **sectnames)
+static void					get_sectnames(struct segment_command_64 *seg,
+		char **sectnames)
 {
-	int					index;
-	size_t				i;
-	struct section_64	*sec;
+	int						index;
+	size_t					i;
+	struct section_64		*sec;
 
 	index = get_len(sectnames);
 	i = 0;
-	sec = (struct section_64 *) ((char *)seg + sizeof(struct segment_command_64));
+	sec = (struct section_64 *)((char *)seg
+			+ sizeof(struct segment_command_64));
 	while (i < seg->nsects)
 	{
 		sectnames[index++] = (sec + i)->sectname;

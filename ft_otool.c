@@ -6,13 +6,13 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 15:02:36 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/29 12:32:54 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 15:26:32 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-int			map_file(char *file_name)
+int				map_file(char *file_name)
 {
 	int			fd;
 	char		*ptr;
@@ -28,7 +28,8 @@ int			map_file(char *file_name)
 		write(2, "fail fstat\n", 11);
 		return (0);
 	}
-	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+			== MAP_FAILED)
 	{
 		write(2, "fail mmap\n", 10);
 		return (0);
@@ -43,9 +44,9 @@ int			map_file(char *file_name)
 	return (1);
 }
 
-int			loop_file(int ac, char **av)
+int				loop_file(int ac, char **av)
 {
-	int		i;
+	int			i;
 
 	i = 1;
 	while (i < ac)
@@ -62,18 +63,16 @@ int			loop_file(int ac, char **av)
 			write(1, ":\n", 2);
 		}
 		if (!map_file(av[i++]))
-			write(1, "KO", 2); //return 0??
+			write(1, "KO", 2);
 	}
-
 	return (1);
 }
 
-int			main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	if (ac < 2)
 		write(2, "need arg\n", 12);
 	else
 		loop_file(ac, av);
-
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/28 12:57:10 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/28 13:44:42 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 14:52:56 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static void		feedO(char **str, int len)
+static void		init(char **str, int len)
 {
 	int i;
 
@@ -36,13 +36,13 @@ static int		gen_hexa(unsigned long n, char **str, int i)
 	n = n / 16;
 	if (n > 0)
 		u = u + gen_hexa(n, str, (i - 1));
-	(*str)[i] =  val[a];
+	(*str)[i] = val[a];
 	u++;
 	return (u);
 }
 
 int				ft_hexa(unsigned long n, char **str, int i)
 {
-	feedO(str, i);
+	init(str, i);
 	return (gen_hexa(n, str, i));
 }

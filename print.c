@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 22:40:55 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/28 22:56:51 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 15:27:18 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int		is_sort(t_print *cmd)
 	cmd = to_start(cmd);
 	while (cmd->next != NULL)
 	{
-		if (ft_strcmp(cmd->name, cmd->next->name) > 0) {
+		if (ft_strcmp(cmd->name, cmd->next->name) > 0)
+		{
 			return (0);
 		}
 		cmd = cmd->next;
 	}
-
 	return (1);
 }
 

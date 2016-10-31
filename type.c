@@ -6,24 +6,25 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 23:03:20 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/20 19:36:09 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 15:04:55 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "nm.h"
 
-int		get_len(char **sectnames)
+int			get_len(char **sectnames)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (sectnames[i] != NULL)
 		i++;
-	return i;
+	return (i);
 }
 
-static char n_sect(int type, char *sectname)
+static char	n_sect(int type, char *sectname)
 {
-	char c;
+	char	c;
 
 	c = '?';
 	if (ft_strcmp(sectname, SECT_TEXT) == 0)
@@ -32,45 +33,35 @@ static char n_sect(int type, char *sectname)
 		c = 'D';
 	else if (ft_strcmp(sectname, SECT_BSS) == 0)
 		c = 'B';
-	else {
+	else
 		c = 'S';
-	}
 	return (c);
 }
 
-char	type(int type, char *sectname, int value)
+char		type(int type, char *sectname, int value)
 {
 	char	c;
+	int		t2;
 
 	c = '?';
-	switch (type & N_TYPE)
+	t2 = type & N_TYPE;
+	if (t2 == N_UNDF || t2 == N_PBUD)
 	{
-		case N_UNDF:
-		case N_PBUD:
-			if (value)
-				c = 'C';
-			else
-				c = 'U';
-			break;
-		case N_ABS:
-			c = 'A';
-			break;
-		case N_SECT:
-			c = n_sect(type, sectname);
-			break;
-		case N_INDR:
-			c = 'I';
-			break;
-		default:
-			break;
+		if (value)
+			c = 'C';
+		else
+			c = 'U';
 	}
-	/*
-	 * symbol is local (non-external)
-	 */
+	else if (t2 == N_ABS)
+		c = 'A';
+	else if (t2 == N_SECT)
+		c = n_sect(type, sectname);
+	else if (t2 == N_INDR)
+		c = 'I';
 	if (!(type & N_EXT))
 		c += 32;
-
-	return c;
+	return (c);
 }
-
-
+/*
+** lowercase (+32) => symbol is local (non-external)
+*/

@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 22:43:32 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/20 19:50:56 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 14:25:31 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ t_print	*new_node(t_print *prev)
 	new->name = NULL;
 	new->next = NULL;
 	new->prev = prev;
-
 	return (new);
 }
 
-t_print *to_start(t_print *cmd)
+t_print	*to_start(t_print *cmd)
 {
 	while (cmd->prev != NULL)
 		cmd = cmd->prev;
-	return cmd;
+	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/20 20:51:43 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/29 00:28:56 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 15:16:06 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 void				putname(char *ar_name, char *obj_name)
 {
-		ft_putchar('\n');
-		ft_putstr(ar_name);
-		ft_putstr("(");
-		ft_putstr(obj_name);
-		ft_putstr("):\n");
+	ft_putchar('\n');
+	ft_putstr(ar_name);
+	ft_putstr("(");
+	ft_putstr(obj_name);
+	ft_putstr("):\n");
 }
 
 /*
- * https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
- * TODO sort
- */
-void			header_ar(char *ptr, char *filename)
+** https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
+** TODO 6 var
+*/
+
+void				header_ar(char *ptr, char *filename)
 {
 	struct ar_hdr	*ar;
 	struct ranlib	*rl;
@@ -41,7 +42,8 @@ void			header_ar(char *ptr, char *filename)
 	rl = (void*)str + 4;
 	size = *((int *)str);
 	size /= sizeof(struct ranlib);
-	while (i < size){
+	while (i < size)
+	{
 		ar = (void*)ptr + rl[i].ran_off;
 		str = ft_strstr(ar->ar_name, ARFMAG) + ft_strlen(ARFMAG);
 		putname(filename, str);

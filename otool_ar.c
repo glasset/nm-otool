@@ -6,24 +6,24 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/28 14:02:49 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/29 12:57:46 by glasset          ###   ########.fr       */
+/*   Updated: 2016/10/31 15:14:49 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static int		is_sort(t_ar *rl, size_t len)
+static int			is_sort(t_ar *rl, size_t len)
 {
-	int			i;
+	int				i;
 
 	i = 0;
 	while ((i + 1) < len)
 	{
 		if (rl[i].ran_off > rl[i + 1].ran_off)
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
 static t_ar			*gen_array(struct ranlib *rl, size_t len, char *ptr)
@@ -40,14 +40,13 @@ static t_ar			*gen_array(struct ranlib *rl, size_t len, char *ptr)
 		arr[i].ran_off = rl[i].ran_off;
 		arr[i++].name = ft_strstr(ar->ar_name, ARFMAG) + ft_strlen(ARFMAG);
 	}
-
-	return arr;
+	return (arr);
 }
 
-static t_ar		*sort_by_offset(t_ar *arr, size_t len)
+static t_ar			*sort_by_offset(t_ar *arr, size_t len)
 {
-	t_ar		tmp;
-	int			i;
+	t_ar			tmp;
+	int				i;
 
 	i = 0;
 	while (!is_sort(arr, len))
@@ -59,12 +58,12 @@ static t_ar		*sort_by_offset(t_ar *arr, size_t len)
 			{
 				tmp = arr[i];
 				arr[i] = arr[i + 1];
-				arr[i + 1]= tmp;
+				arr[i + 1] = tmp;
 			}
 			i++;
 		}
 	}
-	return arr;
+	return (arr);
 }
 
 static void			putname(char *ar_name, char *obj_name)
@@ -76,9 +75,11 @@ static void			putname(char *ar_name, char *obj_name)
 }
 
 /*
- * https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
- */
-void			ot_ar(char *ptr, char *filename)
+** https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
+** TODO 6 var
+*/
+
+void				ot_ar(char *ptr, char *filename)
 {
 	struct ar_hdr	*ar;
 	char			*str;
@@ -93,9 +94,10 @@ void			ot_ar(char *ptr, char *filename)
 	str = (void*)ptr + sizeof(*ar) + SARMAG + extended;
 	size = *((int *)str);
 	size /= sizeof(struct ranlib);
-	list = sort_by_offset(gen_array((void*) str + 4, size, ptr), size);
-	while (i < size){
-		if (i == 0 || ((i - 1) >= 0 && list[i - 1].ran_off != list[i].ran_off)) // ignore doublon
+	list = sort_by_offset(gen_array((void*)str + 4, size, ptr), size);
+	while (i < size)
+	{
+		if (i == 0 || ((i - 1) >= 0 && list[i - 1].ran_off != list[i].ran_off))
 		{
 			ar = (void*)ptr + list[i].ran_off;
 			putname(filename, list[i].name);
