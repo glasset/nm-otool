@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/08/05 14:52:19 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 20:24:02 by glasset          ###   ########.fr       */
+/*   Updated: 2016/11/01 11:57:45 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ void				header_ar(char *ptr, char *filename);
 */
 t_print				*new_node(t_print *prev);
 t_print				*to_start(t_print *cmd);
-int				*sort_by_offset(int *arr, size_t len);
-int				*gen_array(struct ranlib *rl, size_t len, char *ptr);
-
+int					*sort_by_offset(int *arr, size_t len);
+int					*gen_array(struct ranlib *rl, size_t len, char *ptr);
 
 /*
 ** print & list

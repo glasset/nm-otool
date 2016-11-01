@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/18 22:40:55 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 15:27:18 by glasset          ###   ########.fr       */
+/*   Updated: 2016/11/01 12:10:55 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ void	print_list(t_print *cmd)
 	cmd = to_start(cmd);
 	while (cmd != NULL)
 	{
-		ft_putstr(cmd->hexa);
-		ft_putchar(' ');
-		ft_putchar(cmd->type);
-		ft_putchar(' ');
-		ft_putendl(cmd->name);
+		if (cmd->type != 'w')
+		{
+			ft_putstr(cmd->hexa);
+			ft_putchar(' ');
+			ft_putchar(cmd->type);
+			ft_putchar(' ');
+			ft_putendl(cmd->name);
+		}
 		cmd = cmd->next;
 	}
 }

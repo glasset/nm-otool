@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/28 14:02:49 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 21:37:29 by glasset          ###   ########.fr       */
+/*   Updated: 2016/11/01 11:59:37 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void			browse_ar(char *ptr, char *filename, size_t size, int *list)
 	extended = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
 	while (i < size)
 	{
-		if (i != 0 && list[i -1]  == list[i])
+		if (i != 0 && list[i - 1] == list[i])
 		{
 			i++;
 			continue;
@@ -48,6 +48,7 @@ static void			browse_ar(char *ptr, char *filename, size_t size, int *list)
 /*
 ** https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
 */
+
 void				ot_ar(char *ptr, char *filename)
 {
 	struct ar_hdr	*ar;

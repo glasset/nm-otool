@@ -6,17 +6,17 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/19 11:17:39 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 22:07:16 by glasset          ###   ########.fr       */
+/*   Updated: 2016/11/01 12:25:38 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
 /*
-** continue for ignore 'radr://5614' debug
+** type 'w' = ignore 'radr://5614' debug
 */
 
-static t_print				*generate_list(int nsyms, int symoff, int stroff,
+static t_print				*generate_list(struct symtab_command *sym,
 		char *ptr, char **sectnames)
 {
 	int						i;
@@ -24,26 +24,18 @@ static t_print				*generate_list(int nsyms, int symoff, int stroff,
 	char					*strtab;
 	t_print					*cmd;
 
-	list = (void *)ptr + symoff;
-	strtab = ptr + stroff;
+	list = (void *)ptr + sym->symoff;
+	strtab = ptr + sym->stroff;
 	i = 0;
 	cmd = new_node(NULL);
-	while (i < nsyms)
+	while (i < sym->nsyms)
 	{
-		if (list[i].n_type & N_STAB)
-		{
-			i++;
-			continue;
-		}
 		if (list[i].n_value || (list[i].n_type & N_TYPE) == N_SECT)
 			ft_hexa(list[i].n_value, &cmd->hexa, 15);
-		else
-		{
-			free(cmd->hexa);
-			cmd->hexa = ft_strdup("                ");
-		}
 		cmd->type = type(list[i].n_type, sectnames[list[i].n_sect - 1],
 				list[i].n_value);
+		if (list[i].n_type & N_STAB)
+			cmd->type = 'w';
 		cmd->name = ft_strdup(strtab + list[i++].n_un.n_strx);
 		cmd->next = new_node(cmd);
 		cmd = cmd->next;
@@ -94,5 +86,5 @@ void						header_64(char *ptr)
 		command = (void *)command + command->cmdsize;
 		i++;
 	}
-	sort(generate_list(sym->nsyms, sym->symoff, sym->stroff, ptr, sectnames));
+	sort(generate_list(sym, ptr, sectnames));
 }

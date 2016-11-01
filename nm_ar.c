@@ -6,13 +6,11 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/20 20:51:43 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 21:37:32 by glasset          ###   ########.fr       */
+/*   Updated: 2016/11/01 11:59:00 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
-
-
 
 static void			putname(char *ar_name, char *name)
 {
@@ -23,7 +21,7 @@ static void			putname(char *ar_name, char *name)
 	ft_putstr("):\n");
 }
 
-static void			browse_ar(char *ptr, char *filename, size_t size,int *list)
+static void			browse_ar(char *ptr, char *filename, size_t size, int *list)
 {
 	size_t			i;
 	int				extended;
@@ -35,7 +33,7 @@ static void			browse_ar(char *ptr, char *filename, size_t size,int *list)
 	extended = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
 	while (i < size)
 	{
-		if (i != 0 && list[i -1]  == list[i])
+		if (i != 0 && list[i - 1] == list[i])
 		{
 			i++;
 			continue;
@@ -51,6 +49,7 @@ static void			browse_ar(char *ptr, char *filename, size_t size,int *list)
 /*
 ** https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
 */
+
 void				header_ar(char *ptr, char *filename)
 {
 	struct ar_hdr	*ar;

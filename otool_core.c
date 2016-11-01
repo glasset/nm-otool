@@ -6,7 +6,7 @@
 /*   By: glasset <glasset@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/28 12:23:24 by glasset           #+#    #+#             */
-/*   Updated: 2016/10/31 15:42:59 by glasset          ###   ########.fr       */
+/*   Updated: 2016/11/01 11:55:02 by glasset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void					print_section(unsigned long addr, int size, char *ptr,
 	size_t				i;
 
 	i = 0;
-	ft_putstr("Contents of (__TEXT,__text) section");
+	ft_putstr("(__TEXT,__text) section");
 	while (i < size)
 	{
 		if (i % 16 == 0)
 		{
 			ft_putchar('\n');
-			print_addr(addr, bit, '\t');
+			print_addr(addr, bit, ' ');
 			addr += 16;
 		}
 		print_addr(ptr[i], 1, ' ');
